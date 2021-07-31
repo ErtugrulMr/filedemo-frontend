@@ -23,7 +23,6 @@ export class FileService {
   // define function to download files
 
   download(fileName: string): Observable<HttpEvent<Blob>>{
-    console.warn(fileName)
     return this.httpClient.get(`${this.server}/file/download/${fileName}`, {
       reportProgress: true,
       observe: 'events',

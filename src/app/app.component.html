@@ -14,10 +14,11 @@
         <h4>Upload and Download Files</h4>
       </div><br>
       <div class="panel-body">
-        <strong>Select files from your computer</strong>
-        <div *ngIf="fileStatus.status === 'progress' && fileStatus.percent > 0 && fileStatus.percent != 100">
+        <strong>Select files from your device</strong>
+        <p *ngIf="fileStatus.status === 'progress' && fileStatus.percent < 100 && fileStatus.percent > 0 && fileStatus.requestType === 'Uploading'">Uploading {{fileStatus.percent}}%</p>
+        <div *ngIf="fileStatus.status === 'progress' && fileStatus.percent > 0 && fileStatus.percent != 100 && fileStatus.requestType === 'Uploading'">
           <div class="progress mt-3">
-            <div [style.width.%]="fileStatus.percent" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100">{{fileStatus.requestType}} {{fileStatus.percent}}%</div>
+            <div [style.width.%]="fileStatus.percent" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
           </div>
         </div><hr>
 
@@ -34,7 +35,7 @@
         <div *ngIf="fileNames?.length > 0" class="js-upload-finished">
           <h3>Processed files</h3>
           <div *ngFor="let fileName of fileNames" class="list-group mb-2">
-            <a class="list-group-item list-group-item-success">
+            <a class="list-group-item list-group-item-success justify-content-between">
               {{ fileName }}
               <a (click)="onDownloadFiles(fileName)" class="alert-success float-right" style="cursor: pointer;">Download</a>
             </a>

@@ -12,6 +12,7 @@ export class AppComponent {
   title = 'filedemo';
   fileNames: string[] = [];
   fileStatus = {status: '', requestType: '', percent: 0};
+  totalFileSize: number = 0;
 
 
   constructor(private fileService: FileService) {}
@@ -20,6 +21,9 @@ export class AppComponent {
 
   onUploadFiles(files: File[]): void{
     const formData = new FormData();
+    for(const file of files){
+      this.totalFileSize += file.size;
+    }
     for (const file of files){
       formData.append('files', file, file.name);
         this.fileService.upload(formData).subscribe(
@@ -51,10 +55,10 @@ export class AppComponent {
   private reportProgress(httpEvent: HttpEvent<string[] | Blob>): void{
     switch(httpEvent.type){
       case HttpEventType.UploadProgress:
-        this.updateStatus(httpEvent.loaded, httpEvent.total!, 'Uploading');
+        this.updateStatus(httpEvent.loaded, this.totalFileSize, 'Uploading');
         break;
       case HttpEventType.DownloadProgress:
-        this.updateStatus(httpEvent.loaded, httpEvent.total!, 'Downloading');
+        this.updateStatus(httpEvent.loaded, this.totalFileSize, 'Downloading');
         break;
       case HttpEventType.ResponseHeader:
         console.log('Header returned', httpEvent);
